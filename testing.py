@@ -34,11 +34,11 @@ with pricing_data:
     st.write(data2)
 
 # Calculating annual return
-    annual_return = data2['% change'].mean()*252*100 # Multiplied the mean return with *252(working days) to get annual return
+    annual_return = data2['% Change'].mean()*252*100 # Multiplied the mean return with *252(working days) to get annual return
     st.write('Annual return is', annual_return, '%' )
     
 # Calculating standard deviation
-    stdev = np.std(data2['% change'])*np.sqrt(252) 
+    stdev = np.std(data2['% Change'])*np.sqrt(252) 
     st.write('standard deviation is', stdev*100, '%')
     st.write('risk adjusted return is', annual_return/(stdev*100,))
 
