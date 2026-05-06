@@ -16,8 +16,8 @@ end_date = st.sidebar.date_input('end date')
 data = yf.download(Ticker, start = start_date, end = end_date)
 
 # Plotted the line chart using (plotly.express liabrary) of the closing price 
-fig = px.line(data, x = data.index, y = data['Close'].squeeze(), title = Ticker)
-st.plotly_chart(fig)
+close_prices = data['Close'].values.flatten()
+fig = px.line(x=data.index, y=close_prices, title=Ticker, labels={'x': 'Date', 'y': 'Close Price'})
 # X axis is for the date and Y axis is for CLosing price
 
 # Creating 3 new tabs 
@@ -27,7 +27,7 @@ pricing_data, fundamental_data, news = st.tabs(['pricing data', 'fundamental dat
 with pricing_data:
     st.header('price Movement')
     data2 = data
-    data2['% change'] = data['Close']/data['Close'].shift(1) -1 # Adding an extra coloumn for % change
+    data2['% Change'] = data['Close'].squeeze() / data['Close'].squeeze().shift(1) - 1 # Adding an extra coloumn for % change
     data2.dropna(inplace = True) # Dropped null values
     st.write(data2)
 
