@@ -12,13 +12,15 @@ Ticker = st.sidebar.text_input('Ticker')
 start_date = st.sidebar.date_input('start date')
 end_date = st.sidebar.date_input('end date')
 
-#Downloaded data from yf(Api for yahoo finance)
-data = yf.download(Ticker, start = start_date, end = end_date)
+if Ticker:
+    data = yf.download(Ticker, start=start_date, end=end_date)
 
-# Plotted the line chart using (plotly.express liabrary) of the closing price 
-close_prices = data['Close'].values.flatten()
-fig = px.line(x=data.index, y=close_prices, title=Ticker, labels={'x': 'Date', 'y': 'Close Price'})
-# X axis is for the date and Y axis is for CLosing price
+    if not data.empty:
+        # Fix MultiIndex columns from yfinance
+        data.columns = data.columns.get_level_values(0)
+
+        fig = px.line(data, x=data.index, y='Close', title=Ticker)
+        st.plotly_chart(fig)
 
 # Creating 3 new tabs 
 pricing_data, fundamental_data, news = st.tabs(['pricing data', 'fundamental data', 'news'])
